@@ -1,0 +1,91 @@
+
+TemplateSyntaxError
+
+jinja2.exceptions.TemplateSyntaxError: Encountered unknown tag 'endblock'.
+Traceback (most recent call last)
+
+    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/flask/app.py", line 1498, in __call__
+
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/flask/app.py", line 1476, in wsgi_app
+
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+
+    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    File "/uolstore/home/student_lnxhome01/sc22hl/WORK1/app/views.py", line 38, in log
+
+    return render_template('log.html', login_form=login_form, register_form=register_form)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/flask/templating.py", line 149, in render_template
+
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/jinja2/environment.py", line 1084, in get_or_select_template
+
+    return self.get_template(template_name_or_list, parent, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/jinja2/environment.py", line 1013, in get_template
+
+    return self._load_template(name, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/jinja2/environment.py", line 972, in _load_template
+
+    template = self.loader.load(self, name, self.make_globals(globals))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/jinja2/loaders.py", line 138, in load
+
+    code = environment.compile(source, name, filename)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/jinja2/environment.py", line 768, in compile
+
+    self.handle_exception(source=source_hint)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/jinja2/environment.py", line 939, in handle_exception
+
+    raise rewrite_traceback_stack(source=source)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    File "/uolstore/home/student_lnxhome01/sc22hl/WORK1/app/templates/log.html", line 60, in template
+
+    {% endblock %}
+
+    jinja2.exceptions.TemplateSyntaxError: Encountered unknown tag 'endblock'.
+
+The debugger caught an exception in your WSGI application. You can now look at the traceback which led to the error.
+
+To switch between the interactive traceback and the plaintext one, you can click on the "Traceback" headline. From the text traceback you can also create a paste of it. For code execution mouse-over the frame you want to debug and click on the console icon on the right side.
+
+You can execute arbitrary Python code in the stack frames and there are some extra helpers available for introspection:
+
+    dump() shows all variables in the frame
+    dump(obj) dumps all that's known about the object
+
