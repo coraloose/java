@@ -5,30 +5,30 @@
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
-<div class="container right-panel-active">
-    <div class="container_form container--signup">
-        <form method="POST" action="{{ url_for('log') }}" class="form" id="form1">
-            {{ register_form.hidden_tag() }}
+<div class="auth-container right-panel-active">
+    <div class="auth_form auth-container--signup">
+        <form method="POST" action="{{ url_for('register') }}" class="form" id="form1">
+            {{ form.hidden_tag() }}
             <h2 class="form_title">Sign Up</h2>
-            {{ register_form.username(class_="input", placeholder="User") }}
-            {{ register_form.email(class_="input", placeholder="Email") }}
-            {{ register_form.password(class_="input", placeholder="Password") }}
-            {{ register_form.submit(class="btn") }}
+            {{ form.username(class_="input", placeholder="User") }}
+            {{ form.email(class_="input", placeholder="Email") }}
+            {{ form.password(class_="input", placeholder="Password") }}
+            <button type="submit" class="btn">Sign Up</button>
         </form>
     </div>
 
-    <div class="container_form container--signin">
-        <form method="POST" action="{{ url_for('log') }}" class="form" id="form2">
-            {{ login_form.hidden_tag() }}
+    <div class="auth_form auth-container--signin">
+        <form method="POST" action="{{ url_for('login') }}" class="form" id="form2">
+            {{ form.hidden_tag() }}
             <h2 class="form_title">Sign In</h2>
-            {{ login_form.email(class_="input", placeholder="Email") }}
-            {{ login_form.password(class_="input", placeholder="Password") }}
+            {{ form.email(class_="input", placeholder="Email") }}
+            {{ form.password(class_="input", placeholder="Password") }}
             <a href="#" class="link">Forgot your password?</a>
-            {{ login_form.submit(class="btn") }}
+            <button type="submit" class="btn">Sign In</button>
         </form>
     </div>
 
-    <div class="container_overlay">
+    <div class="auth_overlay">
         <div class="overlay">
             <div class="overlay_panel overlay--left">
                 <button class="btn" id="signIn">Sign In</button>
@@ -49,3 +49,4 @@
 
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 {% endblock %}
+
