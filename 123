@@ -1,6 +1,6 @@
-BuildError
+UndefinedError
 
-werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'log'. Did you mean 'login' instead?
+jinja2.exceptions.UndefinedError: 'app.forms.LoginForm object' has no attribute 'username'
 Traceback (most recent call last)
 
     File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/flask/app.py", line 1498, in __call__
@@ -33,10 +33,10 @@ Traceback (most recent call last)
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-    File "/uolstore/home/student_lnxhome01/sc22hl/WORK1/app/views.py", line 10, in index
+    File "/uolstore/home/student_lnxhome01/sc22hl/WORK1/app/views.py", line 24, in login
 
-    return render_template('home.html')
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    return render_template('log.html', form=form)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
     File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
 
@@ -58,30 +58,24 @@ Traceback (most recent call last)
     raise rewrite_traceback_stack(source=source)
     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-    File "/uolstore/home/student_lnxhome01/sc22hl/WORK1/app/templates/home.html", line 1, in top-level template code
+    File "/uolstore/home/student_lnxhome01/sc22hl/WORK1/app/templates/log.html", line 1, in top-level template code
 
     {% extends "base.html" %}
 
-    File "/uolstore/home/student_lnxhome01/sc22hl/WORK1/app/templates/base.html", line 58, in top-level template code
+    File "/uolstore/home/student_lnxhome01/sc22hl/WORK1/app/templates/base.html", line 65, in top-level template code
 
-    <a href="{{ url_for('log') }}" class="btn btn-success">Login / Sign up</a>
+    {% block content %}
 
-    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/flask/app.py", line 1084, in url_for
+    File "/uolstore/home/student_lnxhome01/sc22hl/WORK1/app/templates/log.html", line 12, in block 'content'
 
-    return self.handle_url_build_error(error, endpoint, values)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    {{ form.username(class_="input", placeholder="User") }}
 
-    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/flask/app.py", line 1073, in url_for
+    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/jinja2/utils.py", line 83, in from_obj
 
-    rv = url_adapter.build(  # type: ignore[union-attr]
-         
+    if hasattr(obj, "jinja_pass_arg"):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/werkzeug/routing/map.py", line 924, in build
-
-    raise BuildError(endpoint, values, method, self)
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-    werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'log'. Did you mean 'login' instead?
+    jinja2.exceptions.UndefinedError: 'app.forms.LoginForm object' has no attribute 'username'
 
 The debugger caught an exception in your WSGI application. You can now look at the traceback which led to the error.
 
@@ -91,6 +85,5 @@ You can execute arbitrary Python code in the stack frames and there are some ext
 
     dump() shows all variables in the frame
     dump(obj) dumps all that's known about the object
-
 
 
