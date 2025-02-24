@@ -3,31 +3,35 @@
 {% block title %}Login & Register{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/new.css') }}">
 
 <div class="auth-container right-panel-active">
+    
+    <!-- 注册表单 -->
     <div class="auth_form auth-container--signup">
-        <form method="POST" action="{{ url_for('register') }}" class="form" id="form1">
-            {{ form.hidden_tag() }}
+        <form method="POST" action="{{ url_for('log') }}" class="form" id="form1">
+            {{ register_form.hidden_tag() }}
             <h2 class="form_title">Sign Up</h2>
-            {{ form.username(class_="input", placeholder="User") }}
-            {{ form.email(class_="input", placeholder="Email") }}
-            {{ form.password(class_="input", placeholder="Password") }}
-            <button type="submit" class="btn">Sign Up</button>
+            {{ register_form.username(class_="input", placeholder="Username") }}
+            {{ register_form.email(class_="input", placeholder="Email") }}
+            {{ register_form.password(class_="input", placeholder="Password") }}
+            {{ register_form.submit(class="btn") }}
         </form>
     </div>
 
+    <!-- 登录表单 -->
     <div class="auth_form auth-container--signin">
-        <form method="POST" action="{{ url_for('login') }}" class="form" id="form2">
-            {{ form.hidden_tag() }}
+        <form method="POST" action="{{ url_for('log') }}" class="form" id="form2">
+            {{ login_form.hidden_tag() }}
             <h2 class="form_title">Sign In</h2>
-            {{ form.email(class_="input", placeholder="Email") }}
-            {{ form.password(class_="input", placeholder="Password") }}
+            {{ login_form.email(class_="input", placeholder="Email") }}
+            {{ login_form.password(class_="input", placeholder="Password") }}
             <a href="#" class="link">Forgot your password?</a>
-            <button type="submit" class="btn">Sign In</button>
+            {{ login_form.submit(class="btn") }}
         </form>
     </div>
 
+    <!-- 覆盖层 -->
     <div class="auth_overlay">
         <div class="overlay">
             <div class="overlay_panel overlay--left">
@@ -38,8 +42,10 @@
             </div>
         </div>
     </div>
+
 </div>
 
+<!-- 背景幻灯片 -->
 <div class="slidershow">
     <div class="slidershow--image" style="background-image: url('https://source.unsplash.com/Snqdjm71Y5s')"></div>
     <div class="slidershow--image" style="background-image: url('https://source.unsplash.com/5APj-fzKE-k')"></div>
@@ -47,6 +53,8 @@
     <div class="slidershow--image" style="background-image: url('https://source.unsplash.com/OkTfw7fXLPk')"></div>
 </div>
 
+<!-- JavaScript -->
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
 {% endblock %}
 
