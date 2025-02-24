@@ -1,6 +1,6 @@
-emplateSyntaxError
+BuildError
 
-jinja2.exceptions.TemplateSyntaxError: unexpected '}'
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'log'. Did you mean 'login' instead?
 Traceback (most recent call last)
 
     File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/flask/app.py", line 1498, in __call__
@@ -62,16 +62,26 @@ Traceback (most recent call last)
 
     {% extends "base.html" %}
 
-    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/jinja2/environment.py", line 939, in handle_exception
+    File "/uolstore/home/student_lnxhome01/sc22hl/WORK1/app/templates/base.html", line 58, in top-level template code
 
-    raise rewrite_traceback_stack(source=source)
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    <a href="{{ url_for('log') }}" class="btn btn-success">Login / Sign up</a>
 
-    File "/uolstore/home/student_lnxhome01/sc22hl/WORK1/app/templates/base.html", line 58, in template
+    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/flask/app.py", line 1084, in url_for
 
-    <a href="{{ url_for('log.html') }" class="btn btn-success">Login / Sign up</a>
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-    jinja2.exceptions.TemplateSyntaxError: unexpected '}'
+    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/flask/app.py", line 1073, in url_for
+
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         
+
+    File "/uolstore/home/student_lnxhome01/sc22hl/flask/lib/python3.12/site-packages/werkzeug/routing/map.py", line 924, in build
+
+    raise BuildError(endpoint, values, method, self)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'log'. Did you mean 'login' instead?
 
 The debugger caught an exception in your WSGI application. You can now look at the traceback which led to the error.
 
@@ -81,4 +91,6 @@ You can execute arbitrary Python code in the stack frames and there are some ext
 
     dump() shows all variables in the frame
     dump(obj) dumps all that's known about the object
+
+
 
