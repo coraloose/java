@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/uolstore/home/student_lnxhome01/sc22hl/WORK1/run.py", line 1, in <module>
+    from app import app
+  File "/uolstore/home/student_lnxhome01/sc22hl/WORK1/app/__init__.py", line 5, in <module>
+    from flask_migrate import Migrate
+ModuleNotFoundError: No module named 'flask_migrate'
