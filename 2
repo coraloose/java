@@ -1,116 +1,63 @@
+Finished
+[sc22hl@uol-pc-055409 ParserAutograder(1)]$ cc -std=c99 lexer.h lexer.c parser.h parser.c ParserGrader.c -o myparsertests
+[sc22hl@uol-pc-055409 ParserAutograder(1)]$ ./myparsertests
 	$$$ Checking your lexer, behold $$$
 	=========================================
 Started ...
 
 Testing your parser on various source files (1 mark each)
 File Main.jack 
-** Oops: your parser returned the following info:
-error type: } expected, line: 23,token: do, 
-It should have returned:
-none
-Sorry, -1 mark
+	PASSED
 File Ball.jack 
-** Oops: your parser returned the following info:
-error type: } expected, line: 89,token: else, 
-It should have returned:
-none
-Sorry, -1 mark
+	PASSED
 File Fraction.jack 
-** Oops: your parser returned the following info:
-error type: } expected, line: 26,token: return, 
-It should have returned:
-none
-Sorry, -1 mark
+	PASSED
 File List.jack 
-** Oops: your parser returned the following info:
-error type: } expected, line: 31,token: return, 
-It should have returned:
-none
-Sorry, -1 mark
+	PASSED
 File Square.jack 
-** Oops: your parser returned the following info:
-error type: } expected, line: 48,token: return, 
-It should have returned:
-none
-Sorry, -1 mark
+	PASSED
 File SquareGame.jack 
-** Oops: your parser returned the following info:
-error type: } expected, line: 41,token: if, 
-It should have returned:
-none
-Sorry, -1 mark
+	PASSED
 File classExpected.jack 
 	PASSED
 File closeBracketExpected.jack 
-** Oops: your parser returned the following info:
-error type: } expected, line: 23,token: do, 
-It should have returned:
-error type: ] expected, line: 19,token: ;, 
-Sorry, -1 mark
+	PASSED
 File closeParenExpected.jack 
 ** Oops: your parser returned the following info:
-error type: } expected, line: 31,token: return, 
+error type: a type must be int, char, boolean, or identifier, line: 19,token: {, 
 It should have returned:
 error type: ) expected, line: 19,token: {, 
 Sorry, -1 mark
 File closeParenExpected1.jack 
-** Oops: your parser returned the following info:
-error type: } expected, line: 41,token: if, 
-It should have returned:
-error type: ) expected, line: 43,token: ;, 
-Sorry, -1 mark
+	PASSED
 File equalExpected.jack 
-** Oops: your parser returned the following info:
-error type: } expected, line: 41,token: if, 
-It should have returned:
-error type: = expected, line: 27,token: 0, 
-Sorry, -1 mark
+	PASSED
 File idExpected.jack 
 	PASSED
 File idExpected2.jack 
-** Oops: your parser returned the following info:
-error type: } expected, line: 89,token: else, 
-It should have returned:
-error type: identifier expected, line: 59,token: ., 
-Sorry, -1 mark
+	PASSED
 File openBraceExpected.jack 
 	PASSED
 File openParenExpected.jack 
-** Oops: your parser returned the following info:
-error type: } expected, line: 89,token: else, 
-It should have returned:
-error type: ( expected, line: 52,token: false, 
-Sorry, -1 mark
+	PASSED
 File semicolonExpected.jack 
 ** Oops: your parser returned the following info:
-error type: } expected, line: 26,token: return, 
+error type: syntax error, line: 27,token: }, 
 It should have returned:
 error type: ; expected, line: 27,token: }, 
 Sorry, -1 mark
 File syntaxError.jack 
-** Oops: your parser returned the following info:
-error type: } expected, line: 89,token: else, 
-It should have returned:
-error type: ) expected, line: 96,token: dx, 
-Sorry, -1 mark
+	PASSED
 File syntaxError1.jack 
-** Oops: your parser returned the following info:
-error type: } expected, line: 26,token: return, 
-It should have returned:
-error type: syntax error, line: 61,token: ;, 
-Sorry, -1 mark
+	PASSED
 File syntaxError2.jack 
-** Oops: your parser returned the following info:
-error type: } expected, line: 89,token: else, 
-It should have returned:
-error type: ; expected, line: 91,token: ), 
-Sorry, -1 mark
+	PASSED
 File NewLineInStr.jack 
 	PASSED
 
 ---------------------------------------------------
-		Total mark = 4/20
+		Total mark = 18/20
 ---------------------------------------------------
 
 Finished
-
+[sc22hl@uol-pc-055409 ParserAutograder(1)]$ 
