@@ -1,6 +1,7 @@
 
 
 
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -35,6 +36,71 @@ int InitLexer(char* file_name) {
   currentChar = fgetc(sourceFile);
   peeked = 0;
   return 1;
+}
+
+static Token skipWhitespaceAndComments() {
+  Token errToken;
+  errToken.tp = EOFile; // 用EOFile当做“无错误且未真正到文件末尾”的占位标记
+  errToken.lx[0] = '\0';
+
+  while (1) {
+      // 先跳过空白字符
+      while (isspace(currentChar)) {
+          currentChar = readChar();
+      }
+
+      // 如果当前字符不是 '/'，就说明不是注释开头，退出循环
+      if (currentChar != '/') {
+          break;
+      }
+
+      // 如果是 '/'，需要看下一个字符以判断注释类型
+      int nextC = fgetc(sourceFile);
+      if (nextC == '/') {
+          // 单行注释：跳过直到行尾或EOF
+          while (currentChar != '\n' && currentChar != EOF) {
+              currentChar = readChar();
+          }
+      } else if (nextC == '*') {
+          // 多行注释：一直读到 "*/" 或EOF
+          int foundEnd = 0;
+          while (!foundEnd) {
+              currentChar = readChar();
+              if (currentChar == EOF) {
+                  // 没等到 "*/" 就EOF => 错误记号
+                  errToken.tp = ERR;
+                  strcpy(errToken.lx, "Error: unexpected eof in comment");
+                  errToken.ec = EofInCom; // 对应 EofInCom
+                  errToken.ln = currentLine;
+                  strncpy(errToken.fl, globalFileName, sizeof(errToken.fl) - 1);
+                  return errToken;
+              } 
+              else if (currentChar == '\n') {
+                  currentLine++;
+              } 
+              else if (currentChar == '*') {
+                  // 看看下一个字符是不是 '/'
+                  int maybeSlash = fgetc(sourceFile);
+                  if (maybeSlash == '/') {
+                      // 找到 "*/"
+                      foundEnd = 1;
+                      // 读取下一个字符，准备下次循环
+                      currentChar = readChar();
+                  } else {
+                      // 不是 '/', 退回一个字符继续处理
+                      ungetc(maybeSlash, sourceFile);
+                  }
+              }
+          }
+      } else {
+          // 不是注释，可能只是一个 '/' 符号
+          // 把 nextC 放回缓冲区，这样后面可以当符号处理
+          ungetc(nextC, sourceFile);
+          break;
+      }
+  }
+
+  return errToken;
 }
 
 static int readChar() {
@@ -127,22 +193,24 @@ static Token readSymbol() {
 
 // Get the next token from the source file
 Token GetNextToken() {
-  Token t;
-  if (peeked) {
-      peeked = 0;
-      return peekToken;
-  }
-  skipWhitespace();
-  // 这里可以调用 skipComments(); 如果实现了注释处理
 
-  t.ln = currentLine;
-  strncpy(t.fl, globalFileName, sizeof(t.fl)-1);
-  
-  if (currentChar == EOF) {
-      t.tp = EOFile;
-      strcpy(t.lx, "EOF");
-      return t;
-  }
+    // 先调用 skipWhitespaceAndComments
+    Token skipToken = skipWhitespaceAndComments();
+    if (skipToken.tp == ERR) {
+        // 如果检测到多行注释未闭合，直接返回这个错误记号
+        return skipToken;
+    }
+
+    // 如果 currentChar == EOF，说明没有更多可读内容
+    if (currentChar == EOF) {
+        Token t;
+        t.tp = EOFile;
+        strcpy(t.lx, "EOF");
+        t.ec = 0;
+        t.ln = currentLine;
+        strncpy(t.fl, globalFileName, sizeof(t.fl) - 1);
+        return t;
+    }
   
   if (isalpha(currentChar) || currentChar == '_')
       return readIdentifier();
