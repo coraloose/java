@@ -1,4 +1,4 @@
-Finished
+inished
 [sc22hl@uol-pc-055409 ParserAutograder(1)]$ cc -std=c99 lexer.h lexer.c parser.h parser.c ParserGrader.c -o myparsertests
 [sc22hl@uol-pc-055409 ParserAutograder(1)]$ ./myparsertests
 	$$$ Checking your lexer, behold $$$
@@ -24,40 +24,62 @@ File closeBracketExpected.jack
 	PASSED
 File closeParenExpected.jack 
 ** Oops: your parser returned the following info:
-error type: a type must be int, char, boolean, or identifier, line: 19,token: {, 
+none
 It should have returned:
 error type: ) expected, line: 19,token: {, 
 Sorry, -1 mark
 File closeParenExpected1.jack 
-	PASSED
+** Oops: your parser returned the following info:
+none
+It should have returned:
+error type: ) expected, line: 43,token: ;, 
+Sorry, -1 mark
 File equalExpected.jack 
 	PASSED
 File idExpected.jack 
 	PASSED
 File idExpected2.jack 
-	PASSED
+** Oops: your parser returned the following info:
+none
+It should have returned:
+error type: identifier expected, line: 59,token: ., 
+Sorry, -1 mark
 File openBraceExpected.jack 
 	PASSED
 File openParenExpected.jack 
-	PASSED
+** Oops: your parser returned the following info:
+none
+It should have returned:
+error type: ( expected, line: 52,token: false, 
+Sorry, -1 mark
 File semicolonExpected.jack 
 ** Oops: your parser returned the following info:
-error type: syntax error, line: 27,token: }, 
+none
 It should have returned:
 error type: ; expected, line: 27,token: }, 
 Sorry, -1 mark
 File syntaxError.jack 
-	PASSED
+** Oops: your parser returned the following info:
+none
+It should have returned:
+error type: ) expected, line: 96,token: dx, 
+Sorry, -1 mark
 File syntaxError1.jack 
-	PASSED
+** Oops: your parser returned the following info:
+none
+It should have returned:
+error type: syntax error, line: 61,token: ;, 
+Sorry, -1 mark
 File syntaxError2.jack 
-	PASSED
+** Oops: your parser returned the following info:
+none
+It should have returned:
+error type: ; expected, line: 91,token: ), 
+Sorry, -1 mark
 File NewLineInStr.jack 
 	PASSED
 
 ---------------------------------------------------
-		Total mark = 18/20
+		Total mark = 12/20
 ---------------------------------------------------
 
-Finished
-[sc22hl@uol-pc-055409 ParserAutograder(1)]$ 
