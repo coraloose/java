@@ -150,35 +150,50 @@ static Token readNumber() {
 }
 
 static Token readString() {
-  Token t;
-  t.ln = currentLine;
-  strncpy(t.fl, globalFileName, sizeof(t.fl)-1);
-  int idx = 0;
-  // 跳过开头的双引号
-  currentChar = readChar();
-  while (currentChar != '"' && currentChar != EOF) {
-      if (currentChar == '\n') {
-          t.tp = ERR;
-          strcpy(t.lx, "NewLnInStr");
-          t.ec = NewLnInStr;
-          return t;
-      }
-      if (idx < sizeof(t.lx)-1)
-          t.lx[idx++] = currentChar;
-      currentChar = readChar();
-  }
-  if (currentChar == EOF) {
-      t.tp = ERR;
-      strcpy(t.lx, "EofInStr");
-      t.ec = EofInStr;
-      return t;
-  }
-  t.lx[idx] = '\0';
-  t.tp = STRING;
-  // 跳过结束的双引号
-  currentChar = readChar();
-  return t;
+    Token t;
+    // 把当前的行号存下来，以便后续报错时使用
+    int startLine = currentLine;
+
+    // 初始化 token
+    t.tp = STRING;
+    t.ln = startLine;
+    strncpy(t.fl, globalFileName, sizeof(t.fl) - 1);
+    t.ec = 0;
+
+    // 跳过开头的双引号
+    currentChar = readChar();
+
+    int idx = 0;
+    while (currentChar != '"' && currentChar != EOF) {
+        if (currentChar == '\n') {
+            // 如果遇到换行，报错时使用 startLine
+            t.tp = ERR;
+            strcpy(t.lx, "Error: new line in string constant");
+            t.ec = NewLnInStr;
+            t.ln = startLine;  // 这里使用字符串开始行，而不是 currentLine
+            return t;
+        }
+        if (idx < (int)sizeof(t.lx) - 1) {
+            t.lx[idx++] = (char)currentChar;
+        }
+        currentChar = readChar();
+    }
+
+    if (currentChar == EOF) {
+        t.tp = ERR;
+        strcpy(t.lx, "Error: unexpected eof in string constant");
+        t.ec = EofInStr;
+        t.ln = startLine;  // 同理，如果是EOF，也用字符串开始行号
+        return t;
+    }
+
+    // 结束引号
+    t.lx[idx] = '\0';
+    // 跳过双引号
+    currentChar = readChar();
+    return t;
 }
+
 
 static Token readSymbol() {
   Token t;
