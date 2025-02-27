@@ -1,176 +1,222 @@
+/************************************************************************
+University of Leeds
+School of Computing
+COMP2932- Compiler Design and Construction
+Lexer Module
+
+I confirm that the following code has been developed and written by me and it is entirely the result of my own work.
+I also confirm that I have not copied any parts of this program from another person or any other source or facilitated someone to copy this program from me.
+I confirm that I will not publish the program online or share it with anyone without permission of the module leader.
+
+Student Name:Han Lin
+Student ID:201690928
+Email:sc22hl@leeds.ac.uk
+Date Work Commenced:February 18
+*************************************************************************/
 
 
+static int readChar();
+static Token skipWhitespaceAndComments();
+static Token readIdentifier();
+static Token readNumber();
+static Token readString();
+static Token readSymbol();
 
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-#include "lexer.h"
-
-
-// YOU CAN ADD YOUR OWN FUNCTIONS, DECLARATIONS AND VARIABLES HERE
-static FILE *sourceFile = NULL;
-static int currentChar;
-static int currentLine = 1;
-static int peeked = 0;
-static Token peekToken;
-static char globalFileName[32] = "";  // 用于存储文件名，填充 Token.fl 时使用
-
-// IMPLEMENT THE FOLLOWING functions
-//***********************************
-
-// Initialise the lexer to read from source file
-// file_name is the name of the source file
-// This requires opening the file and making any necessary initialisations of the lexer
-// If an error occurs, the function should return 0
-// if everything goes well the function should return 1
+// Initialize the lexer
 int InitLexer(char* file_name) {
-  strncpy(globalFileName, file_name, sizeof(globalFileName)-1);
-  sourceFile = fopen(file_name, "r");
-  if (sourceFile == NULL) {
-      fprintf(stderr, "Error: Cannot open file %s\n", file_name);
-      return 0;
-  }
-  currentLine = 1;
-  currentChar = fgetc(sourceFile);
-  peeked = 0;
-  return 1;
+    strncpy(globalFileName, file_name, sizeof(globalFileName) - 1);
+    sourceFile = fopen(file_name, "r");
+    if (!sourceFile) {
+        fprintf(stderr, "Error: Cannot open file %s\n", file_name);
+        return 0;
+    }
+    currentLine = 1;
+    currentChar = fgetc(sourceFile);
+    peeked = 0;
+    return 1;
 }
 
-static Token skipWhitespaceAndComments() {
-  Token errToken;
-  errToken.tp = EOFile; // 用EOFile当做“无错误且未真正到文件末尾”的占位标记
-  errToken.lx[0] = '\0';
-
-  while (1) {
-      // 先跳过空白字符
-      while (isspace(currentChar)) {
-          currentChar = readChar();
-      }
-
-      // 如果当前字符不是 '/'，就说明不是注释开头，退出循环
-      if (currentChar != '/') {
-          break;
-      }
-
-      // 如果是 '/'，需要看下一个字符以判断注释类型
-      int nextC = fgetc(sourceFile);
-      if (nextC == '/') {
-          // 单行注释：跳过直到行尾或EOF
-          while (currentChar != '\n' && currentChar != EOF) {
-              currentChar = readChar();
-          }
-      } else if (nextC == '*') {
-          // 多行注释：一直读到 "*/" 或EOF
-          int foundEnd = 0;
-          while (!foundEnd) {
-              currentChar = readChar();
-              if (currentChar == EOF) {
-                  // 没等到 "*/" 就EOF => 错误记号
-                  errToken.tp = ERR;
-                  strcpy(errToken.lx, "Error: unexpected eof in comment");
-                  errToken.ec = EofInCom; // 对应 EofInCom
-                  errToken.ln = currentLine;
-                  strncpy(errToken.fl, globalFileName, sizeof(errToken.fl) - 1);
-                  return errToken;
-              } 
-              else if (currentChar == '\n') {
-                  currentLine++;
-              } 
-              else if (currentChar == '*') {
-                  // 看看下一个字符是不是 '/'
-                  int maybeSlash = fgetc(sourceFile);
-                  if (maybeSlash == '/') {
-                      // 找到 "*/"
-                      foundEnd = 1;
-                      // 读取下一个字符，准备下次循环
-                      currentChar = readChar();
-                  } else {
-                      // 不是 '/', 退回一个字符继续处理
-                      ungetc(maybeSlash, sourceFile);
-                  }
-              }
-          }
-      } else {
-          // 不是注释，可能只是一个 '/' 符号
-          // 把 nextC 放回缓冲区，这样后面可以当符号处理
-          ungetc(nextC, sourceFile);
-          break;
-      }
-  }
-
-  return errToken;
+// Stop the lexer and clean up
+int StopLexer() {
+    if (sourceFile) {
+        fclose(sourceFile);
+        sourceFile = NULL;
+    }
+    return 1;
 }
 
+// Get the next token
+Token GetNextToken() {
+    if (peeked) {
+        peeked = 0;
+        return peekToken;
+    }
+
+    // Skip whitespace and comments
+    Token skipToken = skipWhitespaceAndComments();
+    if (skipToken.tp == ERR) {
+        return skipToken;
+    }
+
+    if (currentChar == EOF) {
+        Token t;
+        t.tp = EOFile;
+        strcpy(t.lx, "EOF");
+        t.ec = 0;
+        t.ln = currentLine;
+        strncpy(t.fl, globalFileName, sizeof(t.fl) - 1);
+        return t;
+    }
+
+    // Check character type and call the corresponding function
+    if (isalpha(currentChar) || currentChar == '_') {
+        return readIdentifier();
+    } else if (isdigit(currentChar)) {
+        return readNumber();
+    } else if (currentChar == '"') {
+        return readString();
+    } else {
+        return readSymbol();
+    }
+}
+
+// Peek the next token without consuming it
+Token PeekNextToken() {
+    if (!peeked) {
+        peekToken = GetNextToken();
+        peeked = 1;
+    }
+    return peekToken;
+}
+
+// Read the next character and update line number
 static int readChar() {
-  int c = fgetc(sourceFile);
-  if (c == '\n') {
-      currentLine++;
-  }
-  return c;
+    int c = fgetc(sourceFile);
+    if (c == '\n') {
+        currentLine++;
+    }
+    return c;
 }
 
-static void skipWhitespace() {
-  while (isspace(currentChar)) {
-      currentChar = readChar();
-  }
+// Skip whitespace and comments
+static Token skipWhitespaceAndComments() {
+    Token errToken;
+    errToken.tp = EOFile; 
+    errToken.lx[0] = '\0';
+    errToken.ec = 0;
+    errToken.ln = currentLine;
+    strncpy(errToken.fl, globalFileName, sizeof(errToken.fl) - 1);
+
+    while (1) {
+        while (isspace(currentChar)) {
+            currentChar = readChar();
+        }
+        if (currentChar != '/') {
+            break;
+        }
+
+        int nextC = readChar();
+        if (nextC == '/') {
+            // Single-line comment
+            while (currentChar != '\n' && currentChar != EOF) {
+                currentChar = readChar();
+            }
+            currentChar = readChar();
+        } else if (nextC == '*') {
+            // Multi-line comment
+            int foundEnd = 0;
+            while (!foundEnd) {
+                currentChar = readChar();
+                if (currentChar == EOF) {
+                    Token t;
+                    t.tp = ERR;
+                    strcpy(t.lx, "Error: unexpected eof in comment");
+                    t.ec = EofInCom;
+                    t.ln = currentLine;
+                    strncpy(t.fl, globalFileName, sizeof(t.fl) - 1);
+                    return t;
+                } else if (currentChar == '*') {
+                    int maybeSlash = readChar();
+                    if (maybeSlash == '/') {
+                        currentChar = readChar();
+                        foundEnd = 1;
+                    } else {
+                        ungetc(maybeSlash, sourceFile);
+                    }
+                }
+            }
+        } else {
+            ungetc(nextC, sourceFile);
+            break;
+        }
+    }
+    return errToken;
 }
 
+// Read an identifier or keyword
 static Token readIdentifier() {
-  Token t;
-  t.ln = currentLine;
-  strncpy(t.fl, globalFileName, sizeof(t.fl)-1);
-  int idx = 0;
-  while (isalnum(currentChar) || currentChar == '_') {
-      if (idx < sizeof(t.lx)-1)
-          t.lx[idx++] = currentChar;
-      currentChar = readChar();
-  }
-  t.lx[idx] = '\0';
-  // 判断是否是关键字，示例仅将其设为标识符
-  t.tp = ID;  
-  // 你可以比较 t.lx 与关键字列表，将 t.tp 设为 RESWORD 时机
-  return t;
+    Token t;
+    t.ln = currentLine;
+    strncpy(t.fl, globalFileName, sizeof(t.fl) - 1);
+    t.ec = 0;
+
+    int idx = 0;
+    while (isalnum(currentChar) || currentChar == '_') {
+        if (idx < (int)sizeof(t.lx) - 1) {
+            t.lx[idx++] = (char)currentChar;
+        }
+        currentChar = readChar();
+    }
+    t.lx[idx] = '\0';
+
+    t.tp = ID;
+    for (int i = 0; i < numKeywords; i++) {
+        if (strcmp(t.lx, keywords[i]) == 0) {
+            t.tp = RESWORD;
+            break;
+        }
+    }
+    return t;
 }
 
+// Read a number
 static Token readNumber() {
-  Token t;
-  t.ln = currentLine;
-  strncpy(t.fl, globalFileName, sizeof(t.fl)-1);
-  int idx = 0;
-  while (isdigit(currentChar)) {
-      if (idx < sizeof(t.lx)-1)
-          t.lx[idx++] = currentChar;
-      currentChar = readChar();
-  }
-  t.lx[idx] = '\0';
-  t.tp = INT;
-  return t;
+    Token t;
+    t.ln = currentLine;
+    strncpy(t.fl, globalFileName, sizeof(t.fl) - 1);
+    t.ec = 0;
+
+    int idx = 0;
+    while (isdigit(currentChar)) {
+        if (idx < (int)sizeof(t.lx) - 1) {
+            t.lx[idx++] = (char)currentChar;
+        }
+        currentChar = readChar();
+    }
+    t.lx[idx] = '\0';
+    t.tp = INT;
+    return t;
 }
 
+// Read a string
 static Token readString() {
     Token t;
-    // 把当前的行号存下来，以便后续报错时使用
     int startLine = currentLine;
 
-    // 初始化 token
     t.tp = STRING;
     t.ln = startLine;
     strncpy(t.fl, globalFileName, sizeof(t.fl) - 1);
     t.ec = 0;
 
-    // 跳过开头的双引号
     currentChar = readChar();
-
     int idx = 0;
+
     while (currentChar != '"' && currentChar != EOF) {
         if (currentChar == '\n') {
-            // 如果遇到换行，报错时使用 startLine
             t.tp = ERR;
             strcpy(t.lx, "Error: new line in string constant");
             t.ec = NewLnInStr;
-            t.ln = startLine;  // 这里使用字符串开始行，而不是 currentLine
+            t.ln = startLine;
             return t;
         }
         if (idx < (int)sizeof(t.lx) - 1) {
@@ -183,98 +229,51 @@ static Token readString() {
         t.tp = ERR;
         strcpy(t.lx, "Error: unexpected eof in string constant");
         t.ec = EofInStr;
-        t.ln = startLine;  // 同理，如果是EOF，也用字符串开始行号
+        t.ln = startLine;
         return t;
     }
 
-    // 结束引号
     t.lx[idx] = '\0';
-    // 跳过双引号
     currentChar = readChar();
     return t;
 }
 
-
+// Read a symbol or illegal symbol
 static Token readSymbol() {
-  Token t;
-  t.ln = currentLine;
-  strncpy(t.fl, globalFileName, sizeof(t.fl)-1);
-  t.lx[0] = currentChar;
-  t.lx[1] = '\0';
-  t.tp = SYMBOL;
-  currentChar = readChar();
-  return t;
-}
+    Token t;
+    t.ln = currentLine;
+    strncpy(t.fl, globalFileName, sizeof(t.fl) - 1);
+    t.ec = 0;
 
-// Get the next token from the source file
-Token GetNextToken() {
-
-    // 先调用 skipWhitespaceAndComments
-    Token skipToken = skipWhitespaceAndComments();
-    if (skipToken.tp == ERR) {
-        // 如果检测到多行注释未闭合，直接返回这个错误记号
-        return skipToken;
+    if (!strchr(allowedSymbols, currentChar)) {
+        t.tp = ERR;
+        strcpy(t.lx, "Error: illegal symbol in source file");
+        t.ec = IllSym;
+        currentChar = readChar();
+    } else {
+        t.tp = SYMBOL;
+        t.lx[0] = (char)currentChar;
+        t.lx[1] = '\0';
+        currentChar = readChar();
     }
-
-    // 如果 currentChar == EOF，说明没有更多可读内容
-    if (currentChar == EOF) {
-        Token t;
-        t.tp = EOFile;
-        strcpy(t.lx, "EOF");
-        t.ec = 0;
-        t.ln = currentLine;
-        strncpy(t.fl, globalFileName, sizeof(t.fl) - 1);
-        return t;
-    }
-  
-  if (isalpha(currentChar) || currentChar == '_')
-      return readIdentifier();
-  if (isdigit(currentChar))
-      return readNumber();
-  if (currentChar == '"')
-      return readString();
-  
-  // 对其他字符，视为符号
-  return readSymbol();
+    return t;
 }
 
-// peek (look) at the next token in the source file without removing it from the stream
-Token PeekNextToken() {
-  if (!peeked) {
-      peekToken = GetNextToken();
-      peeked = 1;
-  }
-  return peekToken;
-}
-
-
-// clean out at end, e.g. close files, free memory, ... etc
-int StopLexer() {
-  if (sourceFile) {
-      fclose(sourceFile);
-      sourceFile = NULL;
-  }
-  return 1;
-}
-// do not remove the next line
 #ifndef TEST
 int main(void) {
     char filename[256];
-    printf("请输入要测试的JACK源文件名：\n");
+    printf("Enter a JACK file name:\n");
     scanf("%255s", filename);
 
     if (!InitLexer(filename)) {
-        fprintf(stderr, "无法打开文件：%s\n", filename);
+        fprintf(stderr, "Cannot open file: %s\n", filename);
         return 1;
     }
 
-    Token token;
-    // 循环读取记号，直到遇到文件结束或发生错误
     while (1) {
-        token = GetNextToken();
-        // 输出记号信息：行号、记号内容和记号类型
-        printf("行号：%d, 内容：%s, 类型：%d\n", token.ln, token.lx, token.tp);
-        if (token.tp == EOFile || token.tp == ERR) {
+        Token tk = GetNextToken();
+        printf("Line: %d, Lexeme: %s, Type: %d\n", tk.ln, tk.lx, tk.tp);
+        if (tk.tp == EOFile || tk.tp == ERR) {
             break;
         }
     }
