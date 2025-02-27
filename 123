@@ -1,16 +1,165 @@
+tarted ...
+Calling your InitLexer function for a non-existent file (zeezo.jack)
+Error: Cannot open file zeezo.jack
+Calling your InitLexer function for an existing file (Main.jack)
 
-const signInBtn = document.getElementById("signIn");
-const signUpBtn = document.getElementById("signUp");
-const authContainer = document.querySelector(".auth-container");
+Testing your GetNextToken function on various source files (1 mark each)
 
-signInBtn.addEventListener("click", () => {
-    authContainer.classList.remove("right-panel-active");
-});
+loading tokens from IdentifiersOnly.jack_tokens.bin file
+There are 12 tokens in this file
+Calling your InitLexer function for file IdentifiersOnly.jack 
+Checking that your GetNextToken function does return the correct tokens
+Calling your StopLexer function
 
-signUpBtn.addEventListener("click", () => {
-    authContainer.classList.add("right-panel-active");
-});
+loading tokens from KeywordsOnly.jack_tokens.bin file
+There are 22 tokens in this file
+Calling your InitLexer function for file KeywordsOnly.jack 
+Checking that your GetNextToken function does return the correct tokens
+Error in token
+Your function returned this token:
+<KeywordsOnly.jack, 1, class, ID>
+Actual token should be:
+<KeywordsOnly.jack, 1, class, RESWORD>
+Calling your StopLexer function
 
-// Optional: Prevent default form submission if using AJAX or custom submit
-// document.getElementById("form1").addEventListener("submit", (e) => e.preventDefault());
-// document.getElementById("form2").addEventListener("submit", (e) => e.preventDefault());
+loading tokens from IntegersOnly.jack_tokens.bin file
+There are 19 tokens in this file
+Calling your InitLexer function for file IntegersOnly.jack 
+Checking that your GetNextToken function does return the correct tokens
+Calling your StopLexer function
+
+loading tokens from Main.jack_tokens.bin file
+There are 109 tokens in this file
+Calling your InitLexer function for file Main.jack 
+Checking that your GetNextToken function does return the correct tokens
+Error in token
+Your function returned this token:
+<Main.jack, 1, /, SYMBOL>
+Actual token should be:
+<Main.jack, 7, class, RESWORD>
+Calling your StopLexer function
+
+loading tokens from Ball.jack_tokens.bin file
+There are 880 tokens in this file
+Calling your InitLexer function for file Ball.jack 
+Checking that your GetNextToken function does return the correct tokens
+Error in token
+Your function returned this token:
+<Ball.jack, 1, /, SYMBOL>
+Actual token should be:
+<Ball.jack, 11, class, RESWORD>
+Calling your StopLexer function
+
+loading tokens from Fraction.jack_tokens.bin file
+There are 265 tokens in this file
+Calling your InitLexer function for file Fraction.jack 
+Checking that your GetNextToken function does return the correct tokens
+Error in token
+Your function returned this token:
+<Fraction.jack, 1, /, SYMBOL>
+Actual token should be:
+<Fraction.jack, 7, class, RESWORD>
+Calling your StopLexer function
+
+loading tokens from List.jack_tokens.bin file
+There are 151 tokens in this file
+Calling your InitLexer function for file List.jack 
+Checking that your GetNextToken function does return the correct tokens
+Error in token
+Your function returned this token:
+<List.jack, 1, /, SYMBOL>
+Actual token should be:
+<List.jack, 7, class, RESWORD>
+Calling your StopLexer function
+
+loading tokens from Square.jack_tokens.bin file
+There are 560 tokens in this file
+Calling your InitLexer function for file Square.jack 
+Checking that your GetNextToken function does return the correct tokens
+Error in token
+Your function returned this token:
+<Square.jack, 1, /, SYMBOL>
+Actual token should be:
+<Square.jack, 7, class, RESWORD>
+Calling your StopLexer function
+
+loading tokens from SquareGame.jack_tokens.bin file
+There are 314 tokens in this file
+Calling your InitLexer function for file SquareGame.jack 
+Checking that your GetNextToken function does return the correct tokens
+Error in token
+Your function returned this token:
+<SquareGame.jack, 1, /, SYMBOL>
+Actual token should be:
+<SquareGame.jack, 17, class, RESWORD>
+Calling your StopLexer function
+
+loading tokens from Empty.jack_tokens.bin file
+There are 1 tokens in this file
+Calling your InitLexer function for file Empty.jack 
+Checking that your GetNextToken function does return the correct tokens
+Calling your StopLexer function
+
+loading tokens from OnlyComments.jack_tokens.bin file
+There are 1 tokens in this file
+Calling your InitLexer function for file OnlyComments.jack 
+Checking that your GetNextToken function does return the correct tokens
+Error in token
+Your function returned this token:
+<OnlyComments.jack, 1, /, SYMBOL>
+Actual token should be:
+<OnlyComments.jack, 18, End of File, EOFile>
+Calling your StopLexer function
+
+loading tokens from EofInComment.jack_tokens.bin file
+There are 1 tokens in this file
+Calling your InitLexer function for file EofInComment.jack 
+Checking that your GetNextToken function does return the correct tokens
+Error in token
+Your function returned this token:
+<EofInComment.jack, 3, /, SYMBOL>
+Actual token should be:
+<EofInComment.jack, 10, Error: unexpected eof in comment, ERR>
+Calling your StopLexer function
+
+loading tokens from EofInStr.jack_tokens.bin file
+There are 1 tokens in this file
+Calling your InitLexer function for file EofInStr.jack 
+Checking that your GetNextToken function does return the correct tokens
+Error in token
+Your function returned this token:
+<EofInStr.jack, 2, EofInStr, ERR>
+Actual token should be:
+<EofInStr.jack, 2, Error: unexpected eof in string constant, ERR>
+Calling your StopLexer function
+
+loading tokens from NewLineInStr.jack_tokens.bin file
+There are 1 tokens in this file
+Calling your InitLexer function for file NewLineInStr.jack 
+Checking that your GetNextToken function does return the correct tokens
+Error in token
+Your function returned this token:
+<NewLineInStr.jack, 1, NewLnInStr, ERR>
+Actual token should be:
+<NewLineInStr.jack, 1, Error: new line in string constant, ERR>
+Calling your StopLexer function
+
+loading tokens from IllegalSymbol.jack_tokens.bin file
+There are 1 tokens in this file
+Calling your InitLexer function for file IllegalSymbol.jack 
+Checking that your GetNextToken function does return the correct tokens
+Error in token
+Your function returned this token:
+<IllegalSymbol.jack, 1, /, SYMBOL>
+Actual token should be:
+<IllegalSymbol.jack, 2, Error: illegal symbol in source file, ERR>
+Calling your StopLexer function
+
+Testing your PeekNextToken function using file Main.jack (3 marks)
+Repeatedly calling PeekNextToken followed by GetNextToken. They should return the same token
+
+---------------------------------------------------
+		Total mark = 8/20
+---------------------------------------------------
+
+Finished
