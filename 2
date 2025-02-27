@@ -1,39 +1,116 @@
-from app import app, db
-from .forms import RegistrationForm, LoginForm
-from .models import User, Permission
-from flask_login import current_user, login_user, logout_user, login_required
-from flask import render_template, flash, redirect, url_for, request, jsonify
-from werkzeug.security import generate_password_hash, check_password_hash
+	$$$ Checking your lexer, behold $$$
+	=========================================
+Started ...
 
-@app.route('/')
-def index():
-    return render_template('home.html')
+Testing your parser on various source files (1 mark each)
+File Main.jack 
+** Oops: your parser returned the following info:
+error type: } expected, line: 23,token: do, 
+It should have returned:
+none
+Sorry, -1 mark
+File Ball.jack 
+** Oops: your parser returned the following info:
+error type: } expected, line: 89,token: else, 
+It should have returned:
+none
+Sorry, -1 mark
+File Fraction.jack 
+** Oops: your parser returned the following info:
+error type: } expected, line: 26,token: return, 
+It should have returned:
+none
+Sorry, -1 mark
+File List.jack 
+** Oops: your parser returned the following info:
+error type: } expected, line: 31,token: return, 
+It should have returned:
+none
+Sorry, -1 mark
+File Square.jack 
+** Oops: your parser returned the following info:
+error type: } expected, line: 48,token: return, 
+It should have returned:
+none
+Sorry, -1 mark
+File SquareGame.jack 
+** Oops: your parser returned the following info:
+error type: } expected, line: 41,token: if, 
+It should have returned:
+none
+Sorry, -1 mark
+File classExpected.jack 
+	PASSED
+File closeBracketExpected.jack 
+** Oops: your parser returned the following info:
+error type: } expected, line: 23,token: do, 
+It should have returned:
+error type: ] expected, line: 19,token: ;, 
+Sorry, -1 mark
+File closeParenExpected.jack 
+** Oops: your parser returned the following info:
+error type: } expected, line: 31,token: return, 
+It should have returned:
+error type: ) expected, line: 19,token: {, 
+Sorry, -1 mark
+File closeParenExpected1.jack 
+** Oops: your parser returned the following info:
+error type: } expected, line: 41,token: if, 
+It should have returned:
+error type: ) expected, line: 43,token: ;, 
+Sorry, -1 mark
+File equalExpected.jack 
+** Oops: your parser returned the following info:
+error type: } expected, line: 41,token: if, 
+It should have returned:
+error type: = expected, line: 27,token: 0, 
+Sorry, -1 mark
+File idExpected.jack 
+	PASSED
+File idExpected2.jack 
+** Oops: your parser returned the following info:
+error type: } expected, line: 89,token: else, 
+It should have returned:
+error type: identifier expected, line: 59,token: ., 
+Sorry, -1 mark
+File openBraceExpected.jack 
+	PASSED
+File openParenExpected.jack 
+** Oops: your parser returned the following info:
+error type: } expected, line: 89,token: else, 
+It should have returned:
+error type: ( expected, line: 52,token: false, 
+Sorry, -1 mark
+File semicolonExpected.jack 
+** Oops: your parser returned the following info:
+error type: } expected, line: 26,token: return, 
+It should have returned:
+error type: ; expected, line: 27,token: }, 
+Sorry, -1 mark
+File syntaxError.jack 
+** Oops: your parser returned the following info:
+error type: } expected, line: 89,token: else, 
+It should have returned:
+error type: ) expected, line: 96,token: dx, 
+Sorry, -1 mark
+File syntaxError1.jack 
+** Oops: your parser returned the following info:
+error type: } expected, line: 26,token: return, 
+It should have returned:
+error type: syntax error, line: 61,token: ;, 
+Sorry, -1 mark
+File syntaxError2.jack 
+** Oops: your parser returned the following info:
+error type: } expected, line: 89,token: else, 
+It should have returned:
+error type: ; expected, line: 91,token: ), 
+Sorry, -1 mark
+File NewLineInStr.jack 
+	PASSED
 
-@app.route('/log', methods=['GET', 'POST'])
-def log():
-    login_form = LoginForm(prefix='login')
-    register_form = RegistrationForm(prefix='register')
+---------------------------------------------------
+		Total mark = 4/20
+---------------------------------------------------
 
-    if login_form.validate_on_submit() and login_form.submit.data:
-        user = User.query.filter_by(email=login_form.email.data).first()
-        if user and check_password_hash(user.password, login_form.password.data):
-            login_user(user)
-            flash('Logged in successfully.', 'success')
-            return redirect(url_for('index'))
-        else:
-            flash('Login unsuccessful. Check email and password.', 'danger')
-
-    if register_form.validate_on_submit() and register_form.submit.data:
-        hashed_password = generate_password_hash(register_form.password.data)
-        default_permission = Permission.query.filter_by(permission_name='user').first()
-        user = User(username=register_form.username.data,
-                    email=register_form.email.data,
-                    password=hashed_password,
-                    permission=default_permission)
-        db.session.add(user)
-        db.session.commit()
-        flash('Your account has been created! You can now log in.', 'success')
-        return redirect(url_for('log'))
-
-    return render_template('log.html', login_form=login_form, register_form=register_form)
+Finished
 
