@@ -1,1 +1,3 @@
 cc -std=c99 lexer.h lexer.c -o lexer
+cc -std=c99 lexer.h lexer.c LexerGrader.c -o mylexertests
+
