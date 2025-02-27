@@ -13,7 +13,33 @@ Student ID:201690928
 Email:sc22hl@leeds.ac.uk
 Date Work Commenced:February 18
 *************************************************************************/
+include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include "lexer.h"
 
+// Global variables
+static FILE *sourceFile = NULL;
+static int currentChar;        // current character
+static int currentLine = 1;    // current line number
+static int peeked = 0;         // peek flag
+static Token peekToken;        // token used for peeking
+static char globalFileName[32] = "";
+
+// Keyword list
+static const char* keywords[] = {
+    "class", "constructor", "function", "method", "field",
+    "static", "var", "int", "char", "boolean",
+    "void", "true", "false", "null", "this",
+    "let", "do", "if", "else", "while", "return"
+};
+static const int numKeywords = 21;
+
+// Allowed symbols
+static const char *allowedSymbols = "{}()[].,;+-*/&|<>=~";
+
+// Function declarations
 
 static int readChar();
 static Token skipWhitespaceAndComments();
