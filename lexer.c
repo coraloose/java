@@ -13,7 +13,7 @@ Student ID:201690928
 Email:sc22hl@leeds.ac.uk
 Date Work Commenced:February 18
 *************************************************************************/
-include <stdlib.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
