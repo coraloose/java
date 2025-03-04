@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}发布行程{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>发布行程</h2>
+    <form method="POST" action="{{ url_for('newBooking') }}">
+        {{ form.hidden_tag() }}
+        
+        <div class="mb-3">
+            {{ form.journey_time.label(class="form-label") }}
+            {{ form.journey_time(class="form-control", placeholder="例如：2025-03-04 14:30:00") }}
+        </div>
+        
+        <div class="mb-3">
+            {{ form.journey_S_point.label(class="form-label") }}
+            {{ form.journey_S_point(class="form-control", placeholder="请输入起点") }}
+        </div>
+        
+        <div class="mb-3">
+            {{ form.journey_E_point.label(class="form-label") }}
+            {{ form.journey_E_point(class="form-control", placeholder="请输入终点") }}
+        </div>
+        
+        <div class="mb-3">
+            {{ form.journey_fee.label(class="form-label") }}
+            {{ form.journey_fee(class="form-control", placeholder="请输入费用") }}
+        </div>
+        
+        <div class="mb-3">
+            {{ form.number_of_passengers.label(class="form-label") }}
+            {{ form.number_of_passengers(class="form-control", placeholder="请输入乘客人数") }}
+        </div>
+        
+        <div class="mb-3">
+            {{ form.luggage_size.label(class="form-label") }}
+            {{ form.luggage_size(class="form-control", placeholder="请输入行李尺寸") }}
+        </div>
+        
+        <div class="mb-3">
+            {{ form.journey_long_term.label(class="form-label") }}
+            {{ form.journey_long_term(class="form-control", placeholder="请输入行程时长") }}
+        </div>
+        
+        <div class="mb-3 form-check">
+            {{ form.ongoing(class="form-check-input") }}
+            {{ form.ongoing.label(class="form-check-label") }}
+        </div>
+        
+        {{ form.submit(class="btn btn-primary") }}
+    </form>
+</div>
+{% endblock %}
+from flask_wtf import FlaskForm
+from wtforms import StringField, DecimalField, IntegerField, DateTimeField, BooleanField, SubmitField
+from wtforms.validators import DataRequired, NumberRange
+
+class BookingForm(FlaskForm):
+    journey_time = DateTimeField('行程时间', format='%Y-%m-%d %H:%M:%S', validators=[DataRequired(message="请选择行程时间")])
+    journey_S_point = StringField('起点', validators=[DataRequired(message="请输入起点")])
+    journey_E_point = StringField('终点', validators=[DataRequired(message="请输入终点")])
+    journey_fee = DecimalField('费用', validators=[DataRequired(message="请输入费用")])
+    number_of_passengers = IntegerField('乘客人数', validators=[DataRequired(message="请输入乘客人数"), NumberRange(min=1, message="至少1人")])
+    luggage_size = IntegerField('行李尺寸', validators=[DataRequired(message="请输入行李尺寸"), NumberRange(min=0, message="不能为负")])
+    journey_long_term = IntegerField('行程时长', validators=[DataRequired(message="请输入行程时长"), NumberRange(min=0, message="不能为负")])
+    ongoing = BooleanField('是否进行中')
+    submit = SubmitField('发布行程')
