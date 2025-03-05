@@ -1,0 +1,179 @@
+import java.io.*;
+import java.net.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.concurrent.locks.ReentrantLock;
+
+/**
+ * Server for the voting system.
+ * 
+ * Usage:
+ *   java Server option1 option2 [option3 ...]
+ * 
+ * Requirements:
+ * - Accept at least two voting options (each a single word).
+ * - Use a fixed thread pool with 30 threads to manage client connections.
+ * - Process two types of requests:
+ *     - "list": return the current voting status.
+ *     - "vote <option>": increment the vote count for <option> and then return
+ *       the complete current state of the poll (one line per option, with each line
+ *       containing at least the option name and its current count).
+ * - Log every valid client request into log.txt in the format:
+ *      date|time|client IP address|request
+ */
+public class Server {
+    // Map to store voting options and their counts.
+    private static Map<String, Integer> voteCounts = new HashMap<>();
+    // Lock for synchronizing updates to voteCounts.
+    private static ReentrantLock lock = new ReentrantLock();
+    // Server listening port.
+    private static final int PORT = 7777;
+    // Fixed thread pool size.
+    private static final int THREAD_POOL_SIZE = 30;
+    // Log file to record valid client requests.
+    private static File logFile = new File("log.txt");
+
+    public static void main(String[] args) {
+        // Check if at least two voting options are provided.
+        if (args.length < 2) {
+            System.err.println("Error: At least two voting options are required.");
+            System.err.println("Usage: java Server option1 option2 [option3 ...]");
+            System.exit(1);
+        }
+        
+        // Initialize voting options and check for duplicates.
+        for (String option : args) {
+            if (voteCounts.containsKey(option)) {
+                System.err.println("Error: Duplicate option '" + option + "' provided. " +
+                        "Please enter at least two distinct options.");
+                System.exit(1);
+            }
+            voteCounts.put(option, 0);
+        }
+        
+        // Delete existing log.txt file if present.
+        if (logFile.exists() && !logFile.delete()) {
+            System.err.println("Warning: Unable to delete existing log.txt file.");
+        }
+        
+        // Create a fixed thread pool.
+        ExecutorService executor = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+        
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+            System.out.println("Server started. Listening on port " + PORT);
+            // Continuously listen for client connections.
+            while (true) {
+                try {
+                    Socket clientSocket = serverSocket.accept();
+                    executor.execute(new ClientHandler(clientSocket));
+                } catch (IOException e) {
+                    System.err.println("Error accepting client connection: " + e.getMessage());
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Server failed to start on port " + PORT + ": " + e.getMessage());
+        } finally {
+            executor.shutdown();
+        }
+    }
+    
+    /**
+     * Log a client request to log.txt.
+     * Format: yyyy-MM-dd|HH:mm:ss|client IP|request
+     *
+     * @param clientIP the client's IP address
+     * @param request  the type of request (e.g., "list" or "vote")
+     */
+    private static void logRequest(String clientIP, String request) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd|HH:mm:ss");
+        String logEntry = dateFormat.format(new Date()) + "|" + clientIP + "|" + request;
+        try (FileWriter fw = new FileWriter(logFile, true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println(logEntry);
+        } catch (IOException e) {
+            System.err.println("Error writing to log file: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Inner class to handle each client connection.
+     */
+    private static class ClientHandler implements Runnable {
+        private Socket clientSocket;
+        
+        public ClientHandler(Socket socket) {
+            this.clientSocket = socket;
+        }
+        
+        @Override
+        public void run() {
+            String clientIP = clientSocket.getInetAddress().getHostAddress();
+            try (BufferedReader in = new BufferedReader(
+                     new InputStreamReader(clientSocket.getInputStream()));
+                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
+                 
+                // Read the client's request.
+                String request = in.readLine();
+                if (request == null || request.trim().isEmpty()) {
+                    out.println("Error: Received empty request.");
+                    return;
+                }
+                
+                String response;
+                // Split the request into tokens; supports "list" and "vote <option>".
+                String[] tokens = request.trim().split("\\s+");
+                if (tokens[0].equalsIgnoreCase("list")) {
+                    // Construct the current poll state.
+                    StringBuilder sb = new StringBuilder();
+                    for (Map.Entry<String, Integer> entry : voteCounts.entrySet()) {
+                        sb.append("'").append(entry.getKey()).append("' has ")
+                          .append(entry.getValue()).append(" vote(s).\n");
+                    }
+                    response = sb.toString();
+                    logRequest(clientIP, "list");
+                } else if (tokens[0].equalsIgnoreCase("vote")) {
+                    if (tokens.length < 2) {
+                        response = "Error: Missing voting option. Usage: vote <option>";
+                    } else {
+                        String option = tokens[1];
+                        if (voteCounts.containsKey(option)) {
+                            // Use lock to ensure thread-safe update.
+                            lock.lock();
+                            try {
+                                int current = voteCounts.get(option);
+                                voteCounts.put(option, current + 1);
+                            } finally {
+                                lock.unlock();
+                            }
+                            // After voting, return the full current state of the poll.
+                            StringBuilder sb = new StringBuilder();
+                            for (Map.Entry<String, Integer> entry : voteCounts.entrySet()) {
+                                sb.append("'").append(entry.getKey()).append("' has ")
+                                  .append(entry.getValue()).append(" vote(s).\n");
+                            }
+                            response = sb.toString();
+                            logRequest(clientIP, "vote");
+                        } else {
+                            response = "Error: Option '" + option + "' does not exist.";
+                        }
+                    }
+                } else {
+                    response = "Error: Invalid command. Please use 'list' or 'vote <option>'.";
+                }
+                // Send the response back to the client.
+                out.println(response);
+            } catch (IOException e) {
+                System.err.println("Client handler encountered an error for client " 
+                                   + clientIP + ": " + e.getMessage());
+            } finally {
+                try {
+                    clientSocket.close();
+                } catch(IOException ex) {
+                    System.err.println("Warning: Failed to close client socket: " + ex.getMessage());
+                }
+            }
+        }
+    }
+}
