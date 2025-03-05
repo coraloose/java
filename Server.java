@@ -39,12 +39,15 @@ public class Server {
             System.err.println("Usage: java Server option1 option2 [option3 ...]");
             System.exit(1);
         }
-        
-        // 初始化投票选项，所有选项初始票数为 0
+        // 初始化投票选项，所有选项初始票数为 0，并检查是否有重复的选项
         for (String option : args) {
+            if (voteCounts.containsKey(option)) {
+                System.err.println("Error: Duplicate option '" + option + "' provided. "
+                + "Please enter at least two distinct options.");
+                System.exit(1);
+            }
             voteCounts.put(option, 0);
         }
-        
         // 如果 log.txt 文件已存在，则删除旧文件，确保每次启动都记录新日志
         if (logFile.exists() && !logFile.delete()) {
             System.err.println("Warning: Unable to delete existing log.txt file.");
