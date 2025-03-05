@@ -1,0 +1,68 @@
+. 确保安装 Java
+在终端中运行以下命令来确认 Java 是否已安装（建议使用 OpenJDK 21 或符合要求的版本）：
+
+bash
+复制
+java -version
+如果没有安装，请使用包管理器安装，例如在 Ubuntu 上运行：
+
+bash
+复制
+sudo apt-get update
+sudo apt-get install openjdk-21-jdk
+2. 编译代码
+编译服务器端代码
+打开终端，进入服务器代码所在目录（例如 cwk/server）：
+
+bash
+复制
+cd /path/to/cwk/server
+javac Server.java
+这会生成 Server.class 文件。
+
+编译客户端代码
+同样，打开另一个终端或者在同一终端中切换到客户端代码目录（例如 cwk/client）：
+
+bash
+复制
+cd /path/to/cwk/client
+javac Client.java
+这会生成 Client.class 文件。
+
+3. 运行程序
+启动服务器
+在 cwk/server 目录下，运行服务器时需要传入至少两个投票选项。例如：
+
+bash
+复制
+java Server rabbit squirrel
+如果启动成功，终端会显示类似：
+
+nginx
+复制
+Server started. Listening on port 7777
+同时，服务器目录下会创建（或重建）一个 log.txt 文件来记录请求。
+
+运行客户端
+在 cwk/client 目录下，你可以运行客户端程序来测试功能。
+
+查看当前投票状态（list 命令）：
+bash
+复制
+java Client list
+为某个选项投票（vote 命令），例如为 rabbit 投票：
+bash
+复制
+java Client vote rabbit
+客户端会显示服务器返回的响应信息。
+
+4. 注意事项
+同一主机：请确保服务器和客户端运行在同一台机器上（使用 localhost），否则可能需要调整 HOST 地址。
+端口占用：确保端口 7777 未被其他程序占用。
+文件路径：编译和运行时注意当前目录，确保正确进入 cwk/server 或 cwk/client 目录。
+按照这些步骤，你就可以在 Linux 系统下成功编译并运行这个投票系统了。如果遇到任何问题，可以检查终端错误信息并确保代码保存正确。
+
+
+
+
+
