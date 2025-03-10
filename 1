@@ -1,2 +1,214 @@
+Using cached joblib-1.4.2-py3-none-any.whl (301 kB)
+Using legacy 'setup.py install' for sklearn, since package 'wheel' is not installed.
+Installing collected packages: joblib, scikit-learn, sklearn
+    Running setup.py install for sklearn ... done
+Successfully installed joblib-1.4.2 scikit-learn-1.6.1 sklearn-0.0
+[sc22hl@uol-pc-055403 ai]$ python CW2.py
+Data is read. Number of Rows: 1000
+--------------------------------------------------
+Data is filtered. Number of Rows: 950
+--------------------------------------------------
+Coefficient of Variation for each feature:
+transactionAmount: 0.7255284380671723
+timeOfDay: 0.7292925750986121
+transactionFrequency: 0.5976378321768575
+dayOfWeek: 0.494532842481643
+--------------------------------------------------
+Train set size: 665
+Test set size: 285
+--------------------------------------------------
+Initial Decision Tree Structure:
+|--- transactionFrequency <= 10.50
+|   |--- timeOfDay <= 5.50
+|   |   |--- transactionAmount <= 220.80
+|   |   |   |--- transactionFrequency <= 3.50
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- transactionFrequency >  3.50
+|   |   |   |   |--- timeOfDay <= 3.50
+|   |   |   |   |   |--- transactionFrequency <= 6.50
+|   |   |   |   |   |   |--- transactionAmount <= 97.22
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- transactionAmount >  97.22
+|   |   |   |   |   |   |   |--- transactionAmount <= 106.42
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- transactionAmount >  106.42
+|   |   |   |   |   |   |   |   |--- transactionAmount <= 130.64
+|   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |--- transactionAmount >  130.64
+|   |   |   |   |   |   |   |   |   |--- transactionAmount <= 179.93
+|   |   |   |   |   |   |   |   |   |   |--- transactionAmount <= 155.97
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- transactionAmount >  155.97
+|   |   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |   |--- transactionAmount >  179.93
+|   |   |   |   |   |   |   |   |   |   |--- timeOfDay <= 2.50
+|   |   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |   |   |--- timeOfDay >  2.50
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |--- transactionFrequency >  6.50
+|   |   |   |   |   |   |--- dayOfWeek <= 1.50
+|   |   |   |   |   |   |   |--- transactionFrequency <= 8.50
+|   |   |   |   |   |   |   |   |--- timeOfDay <= 0.50
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |--- timeOfDay >  0.50
+|   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |--- transactionFrequency >  8.50
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- dayOfWeek >  1.50
+|   |   |   |   |   |   |   |--- transactionAmount <= 8.19
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- transactionAmount >  8.19
+|   |   |   |   |   |   |   |   |--- timeOfDay <= 0.50
+|   |   |   |   |   |   |   |   |   |--- dayOfWeek <= 3.50
+|   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |   |--- dayOfWeek >  3.50
+|   |   |   |   |   |   |   |   |   |   |--- transactionAmount <= 132.52
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 4
+|   |   |   |   |   |   |   |   |   |   |--- transactionAmount >  132.52
+|   |   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |--- timeOfDay >  0.50
+|   |   |   |   |   |   |   |   |   |--- dayOfWeek <= 4.50
+|   |   |   |   |   |   |   |   |   |   |--- timeOfDay <= 1.50
+|   |   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |   |   |--- timeOfDay >  1.50
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 4
+|   |   |   |   |   |   |   |   |   |--- dayOfWeek >  4.50
+|   |   |   |   |   |   |   |   |   |   |--- dayOfWeek <= 6.50
+|   |   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |   |   |--- dayOfWeek >  6.50
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |--- timeOfDay >  3.50
+|   |   |   |   |   |--- transactionAmount <= 168.99
+|   |   |   |   |   |   |--- transactionAmount <= 121.83
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- transactionAmount >  121.83
+|   |   |   |   |   |   |   |--- transactionAmount <= 123.02
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- transactionAmount >  123.02
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- transactionAmount >  168.99
+|   |   |   |   |   |   |--- dayOfWeek <= 4.00
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- dayOfWeek >  4.00
+|   |   |   |   |   |   |   |--- transactionAmount <= 211.67
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- transactionAmount >  211.67
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |--- transactionAmount >  220.80
+|   |   |   |--- transactionFrequency <= 5.50
+|   |   |   |   |--- transactionFrequency <= 4.50
+|   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- transactionFrequency >  4.50
+|   |   |   |   |   |--- dayOfWeek <= 4.50
+|   |   |   |   |   |   |--- transactionAmount <= 440.78
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- transactionAmount >  440.78
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- dayOfWeek >  4.50
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |--- transactionFrequency >  5.50
+|   |   |   |   |--- dayOfWeek <= 3.50
+|   |   |   |   |   |--- transactionFrequency <= 7.50
+|   |   |   |   |   |   |--- transactionAmount <= 257.26
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- transactionAmount >  257.26
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- transactionFrequency >  7.50
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- dayOfWeek >  3.50
+|   |   |   |   |   |--- class: 1.0
+|   |--- timeOfDay >  5.50
+|   |   |--- class: 0.0
+|--- transactionFrequency >  10.50
+|   |--- class: 1.0
 
-python3 -m pip install pandas
+--------------------------------------------------
+Initial Decision Tree - Test Accuracy: 94.74%, Recall: 82.46%
+--------------------------------------------------
+Pruned Decision Tree Structure:
+|--- transactionFrequency <= 10.50
+|   |--- timeOfDay <= 5.50
+|   |   |--- transactionAmount <= 220.80
+|   |   |   |--- transactionFrequency <= 3.50
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- transactionFrequency >  3.50
+|   |   |   |   |--- timeOfDay <= 3.50
+|   |   |   |   |   |--- transactionFrequency <= 6.50
+|   |   |   |   |   |   |--- transactionAmount <= 97.22
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- transactionAmount >  97.22
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- transactionFrequency >  6.50
+|   |   |   |   |   |   |--- dayOfWeek <= 1.50
+|   |   |   |   |   |   |   |--- transactionFrequency <= 8.50
+|   |   |   |   |   |   |   |   |--- timeOfDay <= 0.50
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |--- timeOfDay >  0.50
+|   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |--- transactionFrequency >  8.50
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- dayOfWeek >  1.50
+|   |   |   |   |   |   |   |--- transactionAmount <= 8.19
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- transactionAmount >  8.19
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- timeOfDay >  3.50
+|   |   |   |   |   |--- transactionAmount <= 168.99
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- transactionAmount >  168.99
+|   |   |   |   |   |   |--- dayOfWeek <= 4.00
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- dayOfWeek >  4.00
+|   |   |   |   |   |   |   |--- transactionAmount <= 211.67
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- transactionAmount >  211.67
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |--- transactionAmount >  220.80
+|   |   |   |--- transactionFrequency <= 5.50
+|   |   |   |   |--- transactionFrequency <= 4.50
+|   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- transactionFrequency >  4.50
+|   |   |   |   |   |--- dayOfWeek <= 4.50
+|   |   |   |   |   |   |--- transactionAmount <= 440.78
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- transactionAmount >  440.78
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- dayOfWeek >  4.50
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |--- transactionFrequency >  5.50
+|   |   |   |   |--- class: 1.0
+|   |--- timeOfDay >  5.50
+|   |   |--- class: 0.0
+|--- transactionFrequency >  10.50
+|   |--- class: 1.0
+
+--------------------------------------------------
+Pruned Decision Tree - Test Accuracy: 94.39%, Recall: 77.19%
+--------------------------------------------------
+Optimal ccp_alpha for pruning: 0.0170
+--------------------------------------------------
+Optimized Decision Tree Structure:
+|--- transactionFrequency <= 10.50
+|   |--- timeOfDay <= 5.50
+|   |   |--- transactionAmount <= 220.80
+|   |   |   |--- class: 0.0
+|   |   |--- transactionAmount >  220.80
+|   |   |   |--- transactionFrequency <= 5.50
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- transactionFrequency >  5.50
+|   |   |   |   |--- class: 1.0
+|   |--- timeOfDay >  5.50
+|   |   |--- class: 0.0
+|--- transactionFrequency >  10.50
+|   |--- class: 1.0
+
+--------------------------------------------------
+Initial Decision Tree Depth: 14
+Pruned Decision Tree Depth: 9
+Optimized Decision Tree Depth: 4
+--------------------------------------------------
+Important Feature for Fraudulent Transaction Prediction: transactionFrequency
+--------------------------------------------------
+Optimal ccp_alpha using single most important feature: 0.1700
+--------------------------------------------------
+Optimal tree depth using two most important features: 4
