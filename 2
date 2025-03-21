@@ -31,3 +31,26 @@ h2 {
     text-align: justify;   /* 两端对齐（可选） */
     margin-bottom: 16px;   /* 下边距 */
 }
+/* 自定义表单标签的样式 */
+.form-label {
+    font-size: 18px;      /* 设置标签字号 */
+    color: #222222;       /* 深色文字 */
+    font-weight: 600;     /* 可选：加粗 */
+    margin-bottom: 0.5rem;/* 标签与输入框之间的间距 */
+}
+
+/* 自定义表单输入框（包括文本、日期、数字等）的文字样式 */
+.form-control {
+    font-size: 18px;      /* 设置输入文字字号 */
+    color: #222222;       /* 文字颜色 */
+    background-color: #ffffff; /* 背景色，如果需要 */
+    border: 1px solid #ccc;    /* 边框颜色 */
+    padding: 10px 12px;   /* 内边距 */
+}
+
+/* 聚焦状态下的输入框样式，确保可见性 */
+.form-control:focus {
+    border-color: #007bff;  /* 聚焦时边框颜色 */
+    outline: none;          /* 去除默认 outline */
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); /* 提高可见度 */
+}
