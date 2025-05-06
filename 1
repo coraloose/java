@@ -1,3 +1,5 @@
 cc -std=c99 -o jackc \
   lexer.c parser.c symbols.c compiler.c \
   SymbolGrader.c
+
+cc -std=c99 lexer.h parser.h symbols.h compiler.h lexer.c parser.c symbols.c compiler.c 
