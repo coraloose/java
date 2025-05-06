@@ -3,3 +3,21 @@ cc -std=c99 -o jackc \
   SymbolGrader.c
 
 cc -std=c99 lexer.h parser.h symbols.h compiler.h lexer.c parser.c symbols.c compiler.c 
+
+# ① 若只测语法（ParserGrader）
+cc -std=c99 \
+    lexer.c parser.c         \   # 你的实现
+    ParserGrader.c           \   # 老师给的自测主函数
+    -o myparsertests             # 生成可执行文件
+
+# ② 若之后测符号表 (SymbolGrader)
+cc -std=c99 \
+    lexer.c parser.c symbols.c compiler.c \
+    SymbolGrader.c \
+    -o sym_test
+
+# ③ 若测代码生成 (CodeGrader)
+cc -std=c99 \
+    lexer.c parser.c symbols.c compiler.c \
+    CodeGrader.c \
+    -o cg_test
