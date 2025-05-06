@@ -21,3 +21,10 @@ cc -std=c99 \
     lexer.c parser.c symbols.c compiler.c \
     CodeGrader.c \
     -o cg_test
+    
+head -n 40 SymbolGrader.c | grep -n -E 'main|ifdef'
+
+cc -std=c99 \
+   -DTEST_SYMBOLS          \        # 让 SymbolGrader.c 真正编译它的 main
+   lexer.c parser.c symbols.c compiler.c SymbolGrader.c \
+   -o sym_test
