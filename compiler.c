@@ -72,7 +72,7 @@ int StopCompiler(void) {
     return 1;
 }
 
-#ifndef TEST_COMPILER
+#ifdef TEST_COMPILER
 int main(void) {
     char dir[256];
     printf("Enter directory with .jack files:\n");
