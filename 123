@@ -1,115 +1,52 @@
-Finished
-[sc22hl@uol-pc-055409 SelfGrader]$ cc -std=c99 lexer.h lexer.c LexerGrader.c -o mylexertests
-[sc22hl@uol-pc-055409 SelfGrader]$ ./mylexertests
+[sc22hl@uol-pc-055429 Parse]$ cc -std=c99 lexer.h lexer.c parser.h parser.c ParserGrader.c -o myparsertests
+[sc22hl@uol-pc-055429 Parse]$ ./myparsertests
 	$$$ Checking your lexer, behold $$$
 	=========================================
 Started ...
-Calling your InitLexer function for a non-existent file (zeezo.jack)
-Error: Cannot open file zeezo.jack
-Calling your InitLexer function for an existing file (Main.jack)
 
-Testing your GetNextToken function on various source files (1 mark each)
-
-loading tokens from IdentifiersOnly.jack_tokens.bin file
-There are 12 tokens in this file
-Calling your InitLexer function for file IdentifiersOnly.jack 
-Checking that your GetNextToken function does return the correct tokens
-Calling your StopLexer function
-
-loading tokens from KeywordsOnly.jack_tokens.bin file
-There are 22 tokens in this file
-Calling your InitLexer function for file KeywordsOnly.jack 
-Checking that your GetNextToken function does return the correct tokens
-Calling your StopLexer function
-
-loading tokens from IntegersOnly.jack_tokens.bin file
-There are 19 tokens in this file
-Calling your InitLexer function for file IntegersOnly.jack 
-Checking that your GetNextToken function does return the correct tokens
-Calling your StopLexer function
-
-loading tokens from Main.jack_tokens.bin file
-There are 109 tokens in this file
-Calling your InitLexer function for file Main.jack 
-Checking that your GetNextToken function does return the correct tokens
-Calling your StopLexer function
-
-loading tokens from Ball.jack_tokens.bin file
-There are 880 tokens in this file
-Calling your InitLexer function for file Ball.jack 
-Checking that your GetNextToken function does return the correct tokens
-Calling your StopLexer function
-
-loading tokens from Fraction.jack_tokens.bin file
-There are 265 tokens in this file
-Calling your InitLexer function for file Fraction.jack 
-Checking that your GetNextToken function does return the correct tokens
-Calling your StopLexer function
-
-loading tokens from List.jack_tokens.bin file
-There are 151 tokens in this file
-Calling your InitLexer function for file List.jack 
-Checking that your GetNextToken function does return the correct tokens
-Calling your StopLexer function
-
-loading tokens from Square.jack_tokens.bin file
-There are 560 tokens in this file
-Calling your InitLexer function for file Square.jack 
-Checking that your GetNextToken function does return the correct tokens
-Calling your StopLexer function
-
-loading tokens from SquareGame.jack_tokens.bin file
-There are 314 tokens in this file
-Calling your InitLexer function for file SquareGame.jack 
-Checking that your GetNextToken function does return the correct tokens
-Calling your StopLexer function
-
-loading tokens from Empty.jack_tokens.bin file
-There are 1 tokens in this file
-Calling your InitLexer function for file Empty.jack 
-Checking that your GetNextToken function does return the correct tokens
-Calling your StopLexer function
-
-loading tokens from OnlyComments.jack_tokens.bin file
-There are 1 tokens in this file
-Calling your InitLexer function for file OnlyComments.jack 
-Checking that your GetNextToken function does return the correct tokens
-Calling your StopLexer function
-
-loading tokens from EofInComment.jack_tokens.bin file
-There are 1 tokens in this file
-Calling your InitLexer function for file EofInComment.jack 
-Checking that your GetNextToken function does return the correct tokens
-Calling your StopLexer function
-
-loading tokens from EofInStr.jack_tokens.bin file
-There are 1 tokens in this file
-Calling your InitLexer function for file EofInStr.jack 
-Checking that your GetNextToken function does return the correct tokens
-Calling your StopLexer function
-
-loading tokens from NewLineInStr.jack_tokens.bin file
-There are 1 tokens in this file
-Calling your InitLexer function for file NewLineInStr.jack 
-Checking that your GetNextToken function does return the correct tokens
-Error in token
-Your function returned this token:
-<NewLineInStr.jack, 2, Error: new line in string constant, ERR>
-Actual token should be:
-<NewLineInStr.jack, 1, Error: new line in string constant, ERR>
-Calling your StopLexer function
-
-loading tokens from IllegalSymbol.jack_tokens.bin file
-There are 1 tokens in this file
-Calling your InitLexer function for file IllegalSymbol.jack 
-Checking that your GetNextToken function does return the correct tokens
-Calling your StopLexer function
-
-Testing your PeekNextToken function using file Main.jack (3 marks)
-Repeatedly calling PeekNextToken followed by GetNextToken. They should return the same token
+Testing your parser on various source files (1 mark each)
+File Main.jack 
+	PASSED
+File Ball.jack 
+	PASSED
+File Fraction.jack 
+	PASSED
+File List.jack 
+	PASSED
+File Square.jack 
+	PASSED
+File SquareGame.jack 
+	PASSED
+File classExpected.jack 
+	PASSED
+File closeBracketExpected.jack 
+	PASSED
+File closeParenExpected.jack 
+	PASSED
+File closeParenExpected1.jack 
+	PASSED
+File equalExpected.jack 
+	PASSED
+File idExpected.jack 
+	PASSED
+File idExpected2.jack 
+	PASSED
+File openBraceExpected.jack 
+	PASSED
+File openParenExpected.jack 
+	PASSED
+File semicolonExpected.jack 
+	PASSED
+File syntaxError.jack 
+	PASSED
+File syntaxError1.jack 
+	PASSED
+File syntaxError2.jack 
+	PASSED
+File NewLineInStr.jack 
+	PASSED
 
 ---------------------------------------------------
-		Total mark = 19/20
+		Total mark = 20/20
 ---------------------------------------------------
 
-Finished
