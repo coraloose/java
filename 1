@@ -28,3 +28,10 @@ cc -std=c99 \
    -DTEST_SYMBOLS          \        # 让 SymbolGrader.c 真正编译它的 main
    lexer.c parser.c symbols.c compiler.c SymbolGrader.c \
    -o sym_test
+
+cc -std=c99 \
+    -DTEST             \    # 关闭 lexer.c 里的测试 main
+    -DTEST_PARSER      \    # 关闭 parser.c 里的测试 main
+    -DTEST_COMPILER    \    # 打开 SymbolGrader.c 里的测试 main
+    lexer.c parser.c symbols.c compiler.c SymbolGrader.c \
+    -o sym_test
