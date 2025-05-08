@@ -1,5 +1,5 @@
 cc -std=c99 lexer.h lexer.c -o lexer
 cc -std=c99 lexer.h lexer.c LexerGrader.c -o mylexertests
-cc -std=c99 lexer.h lexer.c parser.h parser.c ParserGrader.c -o myparsertests
-./myparsertests
+cc -std=c99 lexer.c parser.c symbols.c compiler.c SymbolGrader.c -o mytests
+./mytests
 
