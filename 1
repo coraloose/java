@@ -1,51 +1,5 @@
-1[sc22hl@uol-pc-055429 Parse]$ cc -std=c99 lexer.h lexer.c parser.h parser.c ParserGrader.c -o myparsertests
-[sc22hl@uol-pc-055429 Parse]$ ./myparsertests
-	$$$ Checking your lexer, behold $$$
-	=========================================
-Started ...
+[sc22hl@uol-pc-055409 c1]$ cc -std=c99 lexer.c parser.c symbols.c compiler.c CodeGrader.c -o mytests
+/usr/bin/ld: /tmp/ccrTEkn8.o: in function `StopCompiler':
+compiler.c:(.text+0x5d9): undefined reference to `freeClassList'
+collect2: error: ld returned 1 exit status
 
-Testing your parser on various source files (1 mark each)
-File Main.jack 
-	PASSED
-File Ball.jack 
-	PASSED
-File Fraction.jack 
-	PASSED
-File List.jack 
-	PASSED
-File Square.jack 
-	PASSED
-File SquareGame.jack 
-	PASSED
-File classExpected.jack 
-	PASSED
-File closeBracketExpected.jack 
-	PASSED
-File closeParenExpected.jack 
-	PASSED
-File closeParenExpected1.jack 
-	PASSED
-File equalExpected.jack 
-	PASSED
-File idExpected.jack 
-	PASSED
-File idExpected2.jack 
-	PASSED
-File openBraceExpected.jack 
-	PASSED
-File openParenExpected.jack 
-	PASSED
-File semicolonExpected.jack 
-	PASSED
-File syntaxError.jack 
-	PASSED
-File syntaxError1.jack 
-	PASSED
-File syntaxError2.jack 
-	PASSED
-File NewLineInStr.jack 
-	PASSED
-
----------------------------------------------------
-		Total mark = 20/20
----------------------------------------------------
